@@ -2,7 +2,6 @@ import axios from 'axios';
 import { IMG_URL, API_KEY, SEARCH_URL } from './constats';
 import { refs } from './refs';
 import { addEventListenerBtn } from './add-library';
-import { checkingSigningForModalButtons } from './firebase';
 
 export async function renderModal(event) {
   event.preventDefault();
@@ -21,8 +20,9 @@ export async function renderModal(event) {
   const genresFilm = Object.values(filmForModal.genres)[0]
     ? Object.values(filmForModal.genres)[0].name
     : '';
-  const modalLayout = `<div class="img-box"><img class="film_modal_img" src="${IMG_URL}${filmForModal.poster_path
-    }" alt="${filmForModal.original_title}" /></div>
+  const modalLayout = `<div class="img-box"><img class="film_modal_img" src="${IMG_URL}${
+    filmForModal.poster_path
+  }" alt="${filmForModal.original_title}" /></div>
     <div class="modal__content">
       <h1 class="film_modal_title">${filmForModal.title}</h1>
       <ul class="film_info_list">
@@ -33,8 +33,8 @@ export async function renderModal(event) {
           <p class="film_item_category">Genre </p></li>
           <li class="film_info_item">
             <p class="film_item_parameters"><span>${filmForModal.vote_average.toFixed(
-      1
-    )}</span> / ${filmForModal.vote_count}</p>
+              1
+            )}</span> / ${filmForModal.vote_count}</p>
             <p class="film_item_parameters">${filmForModal.popularity}</p>
             <p class="film_item_parameters">${filmForModal.original_title}</p>
             <p class="film_item_parameters">${genresFilm}</p>
@@ -43,24 +43,14 @@ export async function renderModal(event) {
       <h2 class="modal_about_head">About</h2>
       <p class="modal_about_text">${filmForModal.overview}</p>
       <ul class="modal_btn_list">
-          <li class="modal_btn_item"><button class="modal_btn btn__watch" type="button" data-id="${itemId}" disabled>Add to watched</button></li>
-          <li class="modal_btn_item"><button class="modal_btn btn__queue" type="button" data-id="${itemId}" disabled>Add to queue</button></li>
+          <li class="modal_btn_item"><button class="modal_btn btn__watch" type="button" data-id="${itemId}">Add to watched</button></li>
+          <li class="modal_btn_item"><button class="modal_btn btn__queue" type="button" data-id="${itemId}">Add to queue</button></li>
       </ul>
     </div>`;
 
   refs.renderModalBox.insertAdjacentHTML('beforeend', modalLayout);
 
   addEventListenerBtn(filmForModal, itemId);
-
-  await checkingSigningForModalButtons().then(result => {
-    const modalButtonWatched = document.querySelector('.btn__watch');
-    const modalButtonQueue = document.querySelector('.btn__queue');
-
-    if (result) {
-      modalButtonWatched.removeAttribute('disabled');
-      modalButtonQueue.removeAttribute('disabled');
-    }
-  });
 }
 
 refs.buttonModalClose.addEventListener('click', onModalButtonClose);
@@ -68,16 +58,14 @@ refs.backdropEl.addEventListener('click', onBackdropClose);
 
 function stopScrollWhenModalOpen() {
   refs.bodyEl.style.overflowY = 'hidden';
-  refs.btnScrollToTop.style.display = "none";
-
+  refs.btnScrollToTop.style.display = 'none';
 }
 
 function onModalButtonClose() {
   refs.backdropEl.classList.add('is-hidden');
   refs.renderModalBox.innerHTML = '';
   refs.bodyEl.style.overflowY = 'visible';
-  refs.btnScrollToTop.style.display = "block";
-
+  refs.btnScrollToTop.style.display = 'block';
 }
 
 function onEscClose(event) {

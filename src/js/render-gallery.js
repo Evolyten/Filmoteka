@@ -81,7 +81,8 @@ export function renderGalleryItem(data) {
 function isImg(img_poster_path) {}
 
 export function createMarkupMyLibrary(data) {
-  const myLibraryMarkup = data.reduce((acc, film) => {
+  const normalizeData = data.reverse();
+  const myLibraryMarkup = normalizeData.reduce((acc, film) => {
     const {
       id,
       backdrop_path,

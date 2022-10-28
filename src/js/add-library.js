@@ -112,6 +112,10 @@ function addFilmToSelectedFilm(category, selectedFilm) {
     selectedFilm.push(addFilm);
     addFilmToLibrary(category, selectedFilm);
   }
+  if (refs.headerOnMyLibraryPage) {
+    refs.gallery.innerHTML = '';
+    createMarkupMyLibrary(selectedFilm);
+  }
 }
 
 function addFilmToLibrary(category, selectedFilm) {
@@ -132,9 +136,7 @@ function removeFilmFromLibrary(category, remainFilm) {
     remainFilm.splice(findRemuveIndex, 1);
     if (findRemuveIndex !== undefined) {
       localStorage.setItem(`${category}`, JSON.stringify(remainFilm));
-      console.log(refs.headerOnMyLibraryPage);
       if (refs.headerOnMyLibraryPage) {
-        console.log('ok');
         refs.gallery.innerHTML = '';
         createMarkupMyLibrary(remainFilm);
       }
